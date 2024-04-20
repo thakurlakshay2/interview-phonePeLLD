@@ -29,13 +29,13 @@ public class Main {
 
 
         //1. getDocument
-        String documentContent=documentService.getDocument(1);
+        String documentContent=documentService.getDocument(1,user1);
 
         //2. UpdateDocument
         documentService.updateDocument(1,user1,"user 1 second content");
 
         //getDocument after update
-        String upatedContent=documentService.getDocument(1);
+        String upatedContent=documentService.getDocument(1,user1);
 
         System.out.println(upatedContent);
 
@@ -47,7 +47,7 @@ public class Main {
         //3. Revert to previous version
         documentService.revertToVersion(1,user1);
 
-        String revertedContent=documentService.getDocument(1);
+        String revertedContent=documentService.getDocument(1,user1);
 
         System.out.println(revertedContent);
 
@@ -61,5 +61,15 @@ public class Main {
 
 
 
+        //ADDITIONAL
+
+        documentService.createDocument("user 1 first content",user1,1);
+
+//        documentService.getDocument(1,user2); //Exception
+
+
+        documentService.shareViewDocumentAccess(1,user1,user2);
+        String  viewAc=documentService.getDocument(1,user2);
+        System.out.println(viewAc);
     }
 }
