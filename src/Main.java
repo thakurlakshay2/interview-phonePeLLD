@@ -1,6 +1,7 @@
 import models.Document;
 import models.User;
 import services.DocumentService;
+import services.IUserService;
 import services.UserService;
 import storage.DocumentStorage;
 import storage.UserStorage;
@@ -10,7 +11,7 @@ public class Main {
         DocumentStorage documentStorage=new DocumentStorage();
         UserStorage userStorage=new UserStorage();
 
-        UserService userService=new UserService(userStorage);
+        IUserService userService=new UserService(userStorage);
         DocumentService documentService=new DocumentService(documentStorage,userService);
 
         userService.createUser("user1","123");
@@ -18,10 +19,11 @@ public class Main {
 
         User user1=userService.loginUser("user1","123");
 
-//        System.out.println(user1.getUserName());
+        System.out.println(user1.getUserName());
 
 //        User user2=userService.loginUser("user2","1234");  //wrong password
 //        System.out.println(user1.getUserName());
+
             User user2=userService.loginUser("user2","345");
 
         documentService.createDocument("user 1 first content",user1,1);
@@ -30,6 +32,8 @@ public class Main {
 
         //1. getDocument
         String documentContent=documentService.getDocument(1,user1);
+
+        System.out.println(documentContent);
 
         //2. UpdateDocument
         documentService.updateDocument(1,user1,"user 1 second content");

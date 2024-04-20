@@ -10,9 +10,9 @@ import javax.print.Doc;
 
 public class DocumentService {
     DocumentStorage documentStorage;
-    UserService userService;
+    IUserService userService;
 
-    public DocumentService(DocumentStorage documentStorage,UserService userService) {
+    public DocumentService(DocumentStorage documentStorage,IUserService userService) {
         this.documentStorage = documentStorage;
         this.userService=userService;
     }

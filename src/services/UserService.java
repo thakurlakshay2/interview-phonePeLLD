@@ -7,7 +7,7 @@ import models.User;
 import storage.UserStorage;
 
 
-public class UserService {
+public class UserService implements  IUserService {
     UserStorage userStorage;
 
     public UserService(UserStorage userStorage) {
