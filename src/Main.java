@@ -1,3 +1,4 @@
+import models.AccessType;
 import models.Document;
 import models.User;
 import services.DocumentService;
@@ -9,8 +10,7 @@ import storage.IUserStorage;
 import storage.UserStorage;
 
 
-//improvement  - document access type - private public.  //additional functionality
-//functionality not included - latest version number.
+//improvement  - document access type - private ,  public.  //additional functionality.
 
 
 //Q : what happens if multiple used add data at same time..
@@ -34,20 +34,20 @@ public class Main {
 
             User user2=userService.loginUser("user2","345");
 
-        documentService.createDocument("user 1 first content",user1,1);
+        String documentId= documentService.createDocument("user 1 first content",user1);
 //        documentService.createDocument("user 2 first content",user2,1); //exception
 
 
         //1. getDocument
-        String documentContent=documentService.getDocument(1,user1);
+        String documentContent=documentService.getDocument(documentId,user1);
 
         System.out.println(documentContent);
 
         //2. UpdateDocument
-        documentService.updateDocument(1,user1,"user 1 second content");
+        documentService.updateDocument(documentId,user1,"user 1 second content");
 
         //getDocument after update
-        String upatedContent=documentService.getDocument(1,user1);
+        String upatedContent=documentService.getDocument(documentId,user1);
 
         System.out.println(upatedContent);
 
@@ -57,16 +57,16 @@ public class Main {
 
 
         //3. Revert to previous version
-        documentService.revertToVersion(1,user1);
+        documentService.revertToVersion(documentId,user1);
 
-        String revertedContent=documentService.getDocument(1,user1);
+        String revertedContent=documentService.getDocument(documentId,user1);
 
         System.out.println(revertedContent);
 
 //        documentService.revertToVersion(1,user1);   //exception
 
         //4. Delete Document
-        documentService.deleteDocument(1,user1);
+        documentService.deleteDocument(documentId,user1);
 
             //get Document after delete
 //        String deletedContent=documentService.getDocument(1);  //Exception no document found
@@ -75,13 +75,13 @@ public class Main {
 
         //ADDITIONAL
 
-        documentService.createDocument("user 1 first content",user1,1);
+        String documentId2=documentService.createDocument("user 1 first content",user1);
 
 //        documentService.getDocument(1,user2); //Exception
 
 
-        documentService.shareViewDocumentAccess(1,user1,user2);
-        String  viewAc=documentService.getDocument(1,user2);
+        documentService.shareDocumentAccess(documentId2,user1,user2, AccessType.VIEW);
+        String  viewAc=documentService.getDocument(documentId2,user2);
         System.out.println(viewAc);
     }
 }

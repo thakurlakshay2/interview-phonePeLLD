@@ -1,6 +1,7 @@
 package services;
 
 import exceptions.*;
+import models.AccessType;
 import models.Document;
 import models.User;
 import storage.DocumentStorage;
@@ -8,6 +9,7 @@ import storage.IDocumentStorage;
 import storage.UserStorage;
 
 import javax.print.Doc;
+import java.util.UUID;
 
 
 //implementation of some kind of middleware
@@ -15,7 +17,7 @@ import javax.print.Doc;
 // additional functionality edit  functions are there but implementation not complete
 public class DocumentService {
     IDocumentStorage documentStorage;
-    IUserService userService;
+    IUserService userService; //service dependency injection / rather than dependent on user storage..
 
     public DocumentService(IDocumentStorage documentStorage,IUserService userService) {
         this.documentStorage = documentStorage;
@@ -24,27 +26,26 @@ public class DocumentService {
 
     //get document does not need nahi, tha..
     //user not available exception case not included
-    public String getDocument(int  documentId,User user){
+    public String getDocument(String  documentId,User user) {
         Document document=documentStorage.getDocument(documentId,user);
         if(document==null){
             throw new NoDocumentException();
         }
-        if(!documentStorage.getViewDocumentAccess(documentId,user)){
+        if(!documentStorage.getDocumentAccess(documentId,user,AccessType.VIEW)){
             throw new NoViewAccessException();
         }
 
 
-        return document.getContent();
+        return documentStorage.getContent(documentId);
     }
 
     // Q : repetation of adding user as author in document storage.
-    public void createDocument(String documentContent, User user, int documentId){
-            if(documentStorage.getDocument(documentId,user)!=null){
-                throw new DocumentAlreadyExistsException();
-            }
-            documentStorage.addDocument(new Document(documentId,documentContent,user),user);
+    public String createDocument(String documentContent, User user){
+        String documentId= UUID.randomUUID().toString();
+        documentStorage.addDocument(new Document( documentId,documentContent,user),user);
+        return documentId;
     }
-    public synchronized void  updateDocument(int documentId, User user, String updatedContent){
+    public synchronized void  updateDocument(String documentId, User user, String updatedContent){
         Document document=documentStorage.getDocument(documentId,user);
         if(document==null){
             throw new NoDocumentException();
@@ -55,11 +56,11 @@ public class DocumentService {
             throw new NoEditAccessException();
         }
 
-        document.updateContent(updatedContent);
+        documentStorage.updateDocumentContent(documentId,updatedContent);
 
     }
 
-    public void deleteDocument(int documentId,User user){
+    public void deleteDocument(String documentId,User user){
         Document document=documentStorage.getDocument(documentId,user);
         if(document==null){
             throw new NoDocumentException();
@@ -71,7 +72,7 @@ public class DocumentService {
         documentStorage.deleteDocument(documentId);
 
     }
-    public String revertToVersion(int documentId,User user){
+    public String revertToVersion(String documentId,User user){
         Document document=documentStorage.getDocument(documentId,user);
         if(document==null){
             throw new NoDocumentException();
@@ -80,10 +81,10 @@ public class DocumentService {
             throw new NoRevertAccessException();
         }
 
-        return document.revertToPrevVersion();
+        return documentStorage.revertToPreviousVersion(documentId);
     }
 
-    public void shareViewDocumentAccess(int documentId,User author,User recepiant){
+    public void shareDocumentAccess(String documentId, User author, User precipitant, AccessType accessType){
         Document document=documentStorage.getDocument(documentId,author);
         if(document==null){
             throw new NoDocumentException();
@@ -91,8 +92,9 @@ public class DocumentService {
         if(!document.getAuthor().getUserName().equals(author.getUserName())){
             throw new NoEditAccessException();   // wrong exception included.
         }
-        documentStorage.addViewAccess(documentId,recepiant);
+        documentStorage.addAccess(documentId,precipitant,accessType);
     }
+
 
 
 }

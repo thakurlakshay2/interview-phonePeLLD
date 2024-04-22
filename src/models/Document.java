@@ -6,23 +6,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Document {
-    private final int documentId;
+    private final String documentId;
     private String content;
     private final User author;
 
+    private DocumentType documentType;
     private List<String> versions;
 
-    public Document(int documentId,String content,User author) {
+    //
+
+
+    public Document(String documentId,String content,User author) {
         this.documentId = documentId;
         this.content=content;
         this.author=author;
         this.versions=new ArrayList<>();
         this.versions.add(content);
+        this.documentType=DocumentType.PRIVATE;
+    }
+
+    public Document(String documentId,String content,User author,DocumentType documentType) {
+        this.documentId = documentId;
+        this.content=content;
+        this.author=author;
+        this.versions=new ArrayList<>();
+        this.versions.add(content);
+        this.documentType=documentType;
     }
 
 
     //getters
-    public int getDocumentId(){
+    public String getDocumentId(){
         return this.documentId;
     }
 
@@ -49,7 +63,15 @@ public class Document {
         return prevVersionContent;
     }
 
-    //setters
+    public DocumentType getDocumentType() {
+        return documentType;
+    }
+
+    public void setDocumentType(DocumentType documentType) {
+        this.documentType = documentType;
+    }
+
+//setters
 
     public void updateContent(String newContent){
 

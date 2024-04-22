@@ -1,40 +1,37 @@
-Overview:
-A document manager is an application that can be used to create, share and manage text documents. It provides an interface to easily save and retrieve documents.
+# Document Management Application Design
 
-Design a document management application which can be used to create, update, view, and delete documents. It should maintain all the versions of the updates and also have the functionality to revert the document to a previous version.
+## Overview
+A document manager is an application that can be used to create, share, and manage text documents. It provides an interface to easily save and retrieve documents.
 
-For the scope of this problem you can assume a document to be a page with only text data.
-History of changes to a document to be maintained.
-A document can be reverted to a previous version.
-Only the user who created the document can edit, revert or delete the document. Anyone can view the document.
-Mandatory Functionality:
+## Requirements
+- **Create new document:** Users can create new text documents.
+- **Update the document:** Users can update existing documents, creating new versions.
+- **Delete a document:** Users can delete documents.
+- **Get latest active version:** Users can retrieve the latest version of a document.
+- **Revert to a previous version:** Users can revert a document to a previous version.
+- **Access management:** Only the author of a document can edit, revert, or delete it. Anyone can view the document.
 
-User Management: Registration and login
-Document:
-Create new document
-Update the document
-Delete a document
-Get latest active version of a document
-Revert to a previous version
+## Mandatory Functionality
+### User Management
+- `createUser()`: Create a new user in the system.
+- `loginUser()`: Login a user using an ID and password.
 
+### Document
+- `createDocument()`: Add a fresh document.
+- `updateDocument()`: Update an existing document, creating a new version.
+- `deleteDocument()`: Delete a document.
+- `getLatestDocumentVersion()`: Get the latest active version of a document.
+- `revertToVersion()`: Revert a document to a previous version.
 
-Access management:
-Only the author can make changes to the document
-Anyone can view
-Functions to help you think:
-You can use this section to help you think, but not limited to implementing just these
+### Access Management
+- Only the author can make changes to the document.
+- Anyone can view the document.
 
-createUser(): This can be used to create a new user in the system.
-loginUser(): This can be used to login a user, using some id and password.
-getDocument(): Gets a document to view
-createDocument(): Add a fresh document.
-updateDocument(): Update an existing document, creating a new version.
-revertToVersion(): Revert a document to a previous version.
-Additional Functionalities to implement if you have time:
+## Additional Functionalities (if time permits)
+- Sharing edit access between multiple users.
+- Private access - only people with access to the document can view it.
+- State Management - Document can be in DRAFT, PUBLISHED states.
 
-Sharing edit access between multiple users
-Private access - only the people with access to the document can view it.
-State Management - Document can be in DRAFT, PUBLISHED states.
-[execution time limit] 3 seconds (java)
-
-[memory limit] 1 GB
+## Constraints
+- **Execution time limit:** 3 seconds (Java)
+- **Memory limit:** 1 GB

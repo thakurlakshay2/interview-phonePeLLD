@@ -6,6 +6,8 @@ public class User {
     private String password;
 
 
+
+
 //GETTER
     public User(String userName, int userId,String pass) {
         this.userName = userName;
