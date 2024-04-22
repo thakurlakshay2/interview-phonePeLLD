@@ -16,6 +16,8 @@ Update the document
 Delete a document
 Get latest active version of a document
 Revert to a previous version
+
+
 Access management:
 Only the author can make changes to the document
 Anyone can view

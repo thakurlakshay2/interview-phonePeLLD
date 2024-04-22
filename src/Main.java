@@ -4,12 +4,20 @@ import services.DocumentService;
 import services.IUserService;
 import services.UserService;
 import storage.DocumentStorage;
+import storage.IDocumentStorage;
+import storage.IUserStorage;
 import storage.UserStorage;
 
+
+//improvement  - document access type - private public.  //additional functionality
+//functionality not included - latest version number.
+
+
+//Q : what happens if multiple used add data at same time..
 public class Main {
     public static void main(String[] args) {
-        DocumentStorage documentStorage=new DocumentStorage();
-        UserStorage userStorage=new UserStorage();
+        IDocumentStorage documentStorage=new DocumentStorage();
+        IUserStorage userStorage=new UserStorage();
 
         IUserService userService=new UserService(userStorage);
         DocumentService documentService=new DocumentService(documentStorage,userService);

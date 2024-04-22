@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserStorage {
+public class UserStorage implements IUserStorage {
     private Map<String, User> userMap ;
     private Map<String, ArrayList<Document>> userDocumentMap;
     public UserStorage() {

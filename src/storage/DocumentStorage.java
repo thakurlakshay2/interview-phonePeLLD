@@ -6,11 +6,11 @@ import models.User;
 
 import java.util.HashMap;
 
-public class DocumentStorage {
+public class DocumentStorage implements  IDocumentStorage {
     //HashMap< docId , Document >
     HashMap<Integer, Document> doocumentMap;
 
-    //HashMap < documentId , HashSet<User>
+    //HashMap < documentId , HashMap<User,AccessType>
     HashMap<Integer, HashMap<String, AccessType> >  documentAccessMap;
     public DocumentStorage() {
         this.doocumentMap = new HashMap<>();
@@ -52,6 +52,17 @@ public class DocumentStorage {
         HashMap<String, AccessType>  accesMapFOrDoc=  documentAccessMap.get(documentId);
         accesMapFOrDoc.put(recepiant.getUserName(),AccessType.VIEW);
 
+
     }
+
+    public void addEditAccess(int documentId,User recepiant){
+        HashMap<String, AccessType>  accesMapFOrDoc=  documentAccessMap.get(documentId);
+        accesMapFOrDoc.put(recepiant.getUserName(),AccessType.EDIT);
+
+
+    }
+
+
+
 
 }

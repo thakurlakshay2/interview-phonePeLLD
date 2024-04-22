@@ -4,19 +4,26 @@ import exceptions.*;
 import models.Document;
 import models.User;
 import storage.DocumentStorage;
+import storage.IDocumentStorage;
 import storage.UserStorage;
 
 import javax.print.Doc;
 
+
+//implementation of some kind of middleware
+
+// additional functionality edit  functions are there but implementation not complete
 public class DocumentService {
-    DocumentStorage documentStorage;
+    IDocumentStorage documentStorage;
     IUserService userService;
 
-    public DocumentService(DocumentStorage documentStorage,IUserService userService) {
+    public DocumentService(IDocumentStorage documentStorage,IUserService userService) {
         this.documentStorage = documentStorage;
         this.userService=userService;
     }
 
+    //get document does not need nahi, tha..
+    //user not available exception case not included
     public String getDocument(int  documentId,User user){
         Document document=documentStorage.getDocument(documentId,user);
         if(document==null){
@@ -30,22 +37,25 @@ public class DocumentService {
         return document.getContent();
     }
 
+    // Q : repetation of adding user as author in document storage.
     public void createDocument(String documentContent, User user, int documentId){
             if(documentStorage.getDocument(documentId,user)!=null){
                 throw new DocumentAlreadyExistsException();
             }
             documentStorage.addDocument(new Document(documentId,documentContent,user),user);
     }
-    public void updateDocument(int documentId, User user, String content){
+    public synchronized void  updateDocument(int documentId, User user, String updatedContent){
         Document document=documentStorage.getDocument(documentId,user);
         if(document==null){
             throw new NoDocumentException();
         }
+
+        //edit access functionality not complete; , check if user has edit access
         if(!document.getAuthor().getUserName().equals(user.getUserName())){
             throw new NoEditAccessException();
         }
 
-        document.updateContent(content);
+        document.updateContent(updatedContent);
 
     }
 
@@ -79,12 +89,10 @@ public class DocumentService {
             throw new NoDocumentException();
         }
         if(!document.getAuthor().getUserName().equals(author.getUserName())){
-            throw new NoRevertAccessException();
+            throw new NoEditAccessException();   // wrong exception included.
         }
         documentStorage.addViewAccess(documentId,recepiant);
     }
 
-//    private final checkDocumentValidity(){
-//
-//    }
+
 }
